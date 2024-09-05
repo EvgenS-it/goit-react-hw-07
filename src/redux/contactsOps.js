@@ -16,7 +16,7 @@ export const fetchContacts = createAsyncThunk(
   }
 );
 
-export const deleteContactApi = createAsyncThunk(
+export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkApi) => {
     try {
@@ -31,9 +31,18 @@ export const deleteContactApi = createAsyncThunk(
   }
 );
 
-// export const addContact = createAsyncThunk('contacts/addContact', async () => {
-//   try {
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (contact, thunkApi) => {
+    try {
+      const { data } = await axios.post(
+        `https://66d9926c4ad2f6b8ed553777.mockapi.io/contacts`,
+        contact
+      );
+      console.log('added contact:', data);
+      return data; // all data will be added to action.payload in fullField status
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
