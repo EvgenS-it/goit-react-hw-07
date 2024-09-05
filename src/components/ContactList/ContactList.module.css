@@ -1,12 +1,13 @@
 .contactList {
   display: flex;
   gap: 15px;
-  flex-direction: column;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
 }
 
 .contactItem {
   display: flex;
-  max-width: 360px;
+  width: 360px;
   justify-content: space-between;
   outline: 2px solid black;
   padding: 10px;

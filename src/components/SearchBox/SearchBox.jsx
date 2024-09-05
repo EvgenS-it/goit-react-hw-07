@@ -14,7 +14,6 @@ const SearchBox = () => {
   const handleFilter = event => {
     const value = event.target.value;
     const action = changeFilter(value);
-    // setFilterValue(value);
     dispatch(action);
   };
 
