@@ -8,7 +8,6 @@ export const fetchContacts = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       const { data } = await axios.get('/contacts');
-      console.log('data:', data);
       return data; // all data will be added to action.payload in fullField status
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
