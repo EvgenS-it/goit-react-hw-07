@@ -1,10 +1,18 @@
 import css from './Contact.module.css';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsOps';
 import { FaUser } from 'react-icons/fa6';
 import { FaPhone } from 'react-icons/fa6';
 
-const Connact = ({ name, number, onDeleteContact, id }) => {
+const Connact = ({ name, number, id }) => {
   const { infoContainer, icon, text, btn } = css;
+
+  const dispatch = useDispatch();
+  const onDeleteContact = contactId => {
+    const thunk = deleteContact(contactId);
+    dispatch(thunk);
+  };
 
   return (
     <>
@@ -29,7 +37,6 @@ Connact.propTypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  onDeleteContact: PropTypes.func,
 };
 
 export default Connact;

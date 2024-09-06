@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { fetchContacts, deleteContact, addContact } from './contactsOps.js';
-
-// import contactsFromServer from '../contactsFromServer.json';
+import { selectNameFilter } from './filtersSlice.js';
 
 const INITIAL_STATE = {
   contacts: {
@@ -14,16 +13,16 @@ const INITIAL_STATE = {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: INITIAL_STATE,
-  reducers: {
-    // addContact: (state, action) => {
-    //   state.contacts.items.push(action.payload);
-    // },
-    // deleteContact: (state, action) => {
-    //   state.contacts.items = state.contacts.items.filter(
-    //     contact => contact.id !== action.payload
-    //   );
-    // },
-  },
+  // reducers: {
+  //   addContact: (state, action) => {
+  //     state.contacts.items.push(action.payload);
+  //   },
+  //   deleteContact: (state, action) => {
+  //     state.contacts.items = state.contacts.items.filter(
+  //       contact => contact.id !== action.payload
+  //     );
+  //   },
+  // },
   extraReducers: builder =>
     builder
       .addCase(fetchContacts.pending, state => {
@@ -68,5 +67,63 @@ const contactsSlice = createSlice({
       }),
 });
 
+export const selectContacts = state => state.contacts.contacts.items;
+export const selectContactsLoading = state => state.contacts.contacts.loading;
+export const selectContactsError = state => state.contacts.contacts.error;
+
+// compound selector, which includes 2 simple selectors
+export const selectFilteredContacts = createSelector(
+  [selectContacts, selectNameFilter],
+  (contacts, filter) => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }
+);
+
 export const contactsReducer = contactsSlice.reducer;
 // export const { addContact, deleteContact } = contactsSlice.actions;
+
+// Vanila redux logic
+// export const contactsReducer = (state = INITIAL_STATE, action) => {
+//   switch (action.type) {
+//     case 'contacts/addContact': {
+//       return {
+//         ...state,
+//         contacts: {
+//           items: [...state.contacts.items, action.payload],
+//         },
+//       };
+//     }
+
+//     case 'contacts/deleteContact': {
+//       return {
+//         ...state,
+//         contacts: {
+//           items: state.contacts.items.filter(
+//             contact => contact.id !== action.payload
+//           ),
+//         },
+//       };
+//     }
+
+//     default:
+//       return state;
+//   }
+// };
+
+// // action
+// export const addContact = payload => {
+//   return {
+//     type: 'contacts/addContact',
+//     payload,
+//   };
+// };
+
+// // action
+// export const deleteContact = contactId => {
+//   return {
+//     type: 'contacts/deleteContact',
+//     payload: contactId,
+//   };
+// };
